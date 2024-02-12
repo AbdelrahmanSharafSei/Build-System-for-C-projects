@@ -8,7 +8,7 @@ int main(int argc,char **argv)
 {
     int r;
     Build x;
-    x.Init_build("C:/Users/AbdelrahmanSharaf/OneDrive - SEITech Solutions GmbH/Desktop/New folder (2)");
+    x.Init_build("C:/Users/AbdelrahmanSharaf");
     auto logs=x.getFileList();
     for (auto i: logs)
     {

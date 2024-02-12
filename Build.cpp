@@ -9,7 +9,7 @@
 bool Build::is_cFile(std::filesystem::path f)
 {
     auto fName=f.filename().string();
-    std::basic_regex cFileRegex(".*+[\\.cpp|\\.c|\\.h|\\.py]");
+    std::basic_regex cFileRegex(".*(\\.cpp|\\.c|\\.h|\\.py)");
     auto statues = std::regex_match(fName,cFileRegex);
     if (statues)
     {
@@ -26,39 +26,34 @@ std::vector<std::filesystem::path> Build::getProjectFiles (const std::string pro
 {
     
     std::vector<std::filesystem::path> fileList;
-    try 
-    {
+
         // Iterate over the std::filesystem::directory_entry elements using `auto`
-        for (auto const& dir_entry : std::filesystem::recursive_directory_iterator(projectPath))
+        for (auto const& dir_entry : std::filesystem::recursive_directory_iterator(projectPath, std::filesystem::directory_options::skip_permission_denied))
         {
-            if(is_cFile(dir_entry))
-            {
-                fileList.push_back(dir_entry);
-                // std::cout<<"i am Cfile"<<std::endl;
-            }
-            else
-            {
+            std::cout<<dir_entry<<std::endl;
+            
+                if(is_cFile(dir_entry))
+                {
+                    fileList.push_back(dir_entry);
+                    // std::cout<<"i am Cfile"<<std::endl;
+                }
+                else
+                {
                 // std::cout<<"i am here"<<std::endl;
-            }       
-        }
-         std::cout<<"all files"<<std::endl;
+                }       
+           
+            //  std::cout<<"all files"<<std::endl;
+
     } 
-    catch (const std::exception &e)
-    {
-        std::cerr <<e.what()<<std::endl;
-    }
-    catch (...) 
-    {
-        std::cerr << "Error accessing: "<<std::endl;
-    }
-    std::cout<<"all files b"<<std::endl;
+
+    // std::cout<<"all files b"<<std::endl;
     return fileList;
 }
 
 void Build::Init_build(const std::string projectPath)
 {
     FileList=getProjectFiles(projectPath);
-    std::cout<<"all files be"<<std::endl;
+    // std::cout<<"all files be"<<std::endl;
 }
 
 std::vector<std::filesystem::path> Build::getFileList()
