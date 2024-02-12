@@ -6,4 +6,5 @@ if not exist "%folderNam%" (
 ) else (
     CD /D C:\Users\AbdelrahmanSharaf\OneDrive - SEITech Solutions GmbH\Desktop\Build\Exe_File
     Build.exe
+    pause
 )

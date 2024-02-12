@@ -3,48 +3,67 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <regex> 
 #include "Build.h"
+
+bool Build::is_cFile(std::filesystem::path f)
+{
+    auto fName=f.filename().string();
+    std::basic_regex cFileRegex(".*+[\\.cpp|\\.c|\\.h|\\.py]");
+    auto statues = std::regex_match(fName,cFileRegex);
+    if (statues)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }    
+}
+
 
 std::vector<std::filesystem::path> Build::getProjectFiles (const std::string projectPath)
 {
+    
     std::vector<std::filesystem::path> fileList;
     try 
     {
-        for (const auto& entry : std::filesystem::directory_iterator(projectPath)) 
+        // Iterate over the std::filesystem::directory_entry elements using `auto`
+        for (auto const& dir_entry : std::filesystem::recursive_directory_iterator(projectPath))
         {
-            std::cout << entry.path().filename() << std::endl;
-            fileList.push_back(std::to_string(5));
+            if(is_cFile(dir_entry))
+            {
+                fileList.push_back(dir_entry);
+                // std::cout<<"i am Cfile"<<std::endl;
+            }
+            else
+            {
+                // std::cout<<"i am here"<<std::endl;
+            }       
         }
+         std::cout<<"all files"<<std::endl;
     } 
-    catch (const std::filesystem::filesystem_error& ex) 
+    catch (const std::exception &e)
     {
-        std::cerr << "Error accessing folder: " << ex.what() << std::endl;
+        std::cerr <<e.what()<<std::endl;
     }
+    catch (...) 
+    {
+        std::cerr << "Error accessing: "<<std::endl;
+    }
+    std::cout<<"all files b"<<std::endl;
     return fileList;
 }
 
 void Build::Init_build(const std::string projectPath)
 {
-    std::vector<std::filesystem::path> fileList=getProjectFiles(projectPath);
+    FileList=getProjectFiles(projectPath);
+    std::cout<<"all files be"<<std::endl;
 }
 
-/*[4:41 PM] Abdelrahman Sharaf
-list of files in a folder
-[4:43 PM] Abdelrahman Sharaf
-#include <iostream>
-#include <filesystem>
- 
-int main() {
-    const std::string folderPath = "/path/to/your/folder"; // Replace with your folder path
- 
-    try {
-        for (const auto& entry : std::filesystem::directory_iterator(folderPath)) {
-            std::cout << entry.path().filename() << std::endl;
-        }
-    } catch (const std::filesystem::filesystem_error& ex) {
-        std::cerr << "Error accessing folder: " << ex.what() << std::endl;
-        return 1;
-    }
- 
-    return 0;
-}*/
+std::vector<std::filesystem::path> Build::getFileList()
+{
+    return FileList;
+}
+
+

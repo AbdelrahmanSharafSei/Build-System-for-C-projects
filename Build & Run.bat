@@ -26,3 +26,4 @@ g++ "build\Build.o" "build\main.o" -o "Exe_File\Build.exe"
 CD /D C:\Users\AbdelrahmanSharaf\OneDrive - SEITech Solutions GmbH\Desktop\Build\Exe_File
 pause
 Build.exe
+pause

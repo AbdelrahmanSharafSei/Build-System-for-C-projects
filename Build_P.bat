@@ -1,26 +1,19 @@
 @echo off
 set folderName=build
  
-if not exist "%folderName%" 
-(
+if not exist "%folderName%" (
     mkdir "%folderName%"
     echo Directory created: %folderName%
-) 
-else 
-(
+) else (
     echo Directory already exists: %folderName%
 )
  
-
 set folderNam=Exe_File
  
-if not exist "%folderNam%" 
-(
+if not exist "%folderNam%" (
     mkdir "%folderNam%"
     echo Directory created: %folderNam%
-) 
-else 
-(
+) else (
     echo Directory already exists: %folderNam%
 )
 
