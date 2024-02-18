@@ -8,13 +8,8 @@ int main(int argc,char **argv)
 {
     int r;
     Build x;
-    x.Init_build("C:/Users/AbdelrahmanSharaf");
-    auto logs=x.getFileList();
-    for (auto i: logs)
-    {
-        std::cout<<i.filename()<<std::endl;
-    }
-    
+    x.Init_build("E:/25_Impl/85_Release");
+
     std::cin>>r;
     return 0;
 }

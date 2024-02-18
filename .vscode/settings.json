@@ -57,6 +57,7 @@
         "map": "cpp",
         "ratio": "cpp",
         "iomanip": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "complex": "cpp"
     }
 }

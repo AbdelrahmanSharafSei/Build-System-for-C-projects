@@ -9,6 +9,7 @@
           "-g",
           "main.cpp",
           "Build.cpp",
+          "FileTrakker.cpp",
           "-o",
           "${fileDirname}\\${fileBasenameNoExtension}.exe"
         ],
