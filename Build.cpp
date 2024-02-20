@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <filesystem>
 #include <string>
 #include <map>
@@ -6,6 +7,7 @@
 #include <regex> 
 #include "Build.h"
 #include "FileTrakker.h"
+
 
 bool Build::is_cFile(std::filesystem::path f)
 {
@@ -76,6 +78,7 @@ std::vector<std::filesystem::path> Build::getProjectFiles (const std::string pro
 
     return fileList;
 }
+
 
 Build::Build(const std::string projectPath)
 {

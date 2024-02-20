@@ -10,7 +10,9 @@ class Build
 {
     private:
         std::vector<std::filesystem::path> FileList;
+        
         std::vector<std::filesystem::path> getProjectFiles (const std::string projectPath);
+
         bool is_cFile(std::filesystem::path f);
         bool isInitProjectFilesGenerated(const std::string projectPath);
         bool Staged;

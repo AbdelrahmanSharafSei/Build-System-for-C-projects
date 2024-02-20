@@ -13,6 +13,7 @@ class FileTracker
         std::vector<std::filesystem::path> projectFilesList;
         
         std::string readFileContent(std::filesystem::path fpath);
+        std::string ExtractSoucreeFileContenet(std::string content);
         std::size_t generateHash(const std::string& data);
 
     public:

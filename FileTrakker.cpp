@@ -18,11 +18,16 @@ std::string FileTracker::readFileContent(std::filesystem::path fpath)
         throw std::runtime_error("Failed to open file: ");
     }
     std::string content((std::istreambuf_iterator<char>(inputFile)), std::istreambuf_iterator<char>());
-        std::regex newline("( |\\n)");
-        std::regex multiplieComment("(//[^\n]*$|/(?!\\\\)\\*[\\s\\S]*?\\*(?!\\\\)/)|(//.*\\n)");
+    return content;
+}
 
-        content=std::regex_replace(content,multiplieComment,"");
-        content=std::regex_replace(content,newline,"");
+std::string FileTracker::ExtractSoucreeFileContenet(std::string content)
+{
+    std::regex newline("( |\\n)");
+    std::regex multiplieComment("(//[^\n]*$|/(?!\\\\)\\*[\\s\\S]*?\\*(?!\\\\)/)|(//.*\\n)");
+
+    content=std::regex_replace(content,multiplieComment,"");
+    content=std::regex_replace(content,newline,"");
     return content;
 }
 
@@ -48,6 +53,7 @@ std::map<std::string,std::size_t> FileTracker::generateFilesHash(std::vector<std
     {
         auto fileNameString=file.c_str();
         fileContent = readFileContent(fileNameString);
+        fileContent = ExtractSoucreeFileContenet(fileContent);
         FilesHashListCopy.insert({file.filename().string(),generateHash(fileContent)});
     }
     return FilesHashListCopy;
