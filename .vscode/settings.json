@@ -58,6 +58,11 @@
         "ratio": "cpp",
         "iomanip": "cpp",
         "filesystem": "cpp",
-        "complex": "cpp"
+        "complex": "cpp",
+        "format": "cpp",
+        "charconv": "cpp",
+        "chrono": "cpp",
+        "span": "cpp",
+        "variant": "cpp"
     }
 }

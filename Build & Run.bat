@@ -18,9 +18,9 @@ if not exist "%folderNam%" (
 )
 
 
-g++ -std=c++17 -c FileTrakker.cpp -o "build\FileTrakker.o"
-g++ -std=c++17 -c Build.cpp -o "build\Build.o"
-g++ -std=c++17 -c main.cpp -o "build\main.o"
+g++ -std=c++20 -c FileTrakker.cpp -o "build\FileTrakker.o"
+g++ -std=c++20 -c Build.cpp -o "build\Build.o"
+g++ -std=c++20 -c main.cpp -o "build\main.o"
 
 g++ "build\FileTrakker.o" "build\Build.o" "build\main.o" -o "Exe_File\Build.exe"
 
