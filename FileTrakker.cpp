@@ -37,13 +37,28 @@ std::size_t FileTracker::generateHash(const std::string& data)
     return hasher(data);
 }
 
-std::map<std::string,std::size_t> FileTracker::generateHashMap(std::ifstream hashLogFile)
+std::map<std::string,std::size_t> FileTracker::generateHashMap(std::string hashLogFile)
 {
+    hashLogFile+="/fileList_hashs.txt";
+    std::string content,filesName,hashs;
     std::map<std::string,std::size_t> hashMap;
+    content=readFileContent(hashLogFile);
+    std::regex fileName("^[A-z].*  ");
+    std::regex Hash("^[0-9][0-9]*");
+    std::regex space(" ");
+
+    filesName=std::regex_replace(content,Hash,"");
+    filesName=std::regex_replace(filesName,space,"");
+
+    hashs=std::regex_replace(content,fileName,"");
+    hashs=std::regex_replace(hashs,space,"");
+
+    std::cout<<filesName<<std::endl;
+    std::cout<<filesName<<std::endl;
     return hashMap;
 }
 
-std::map<std::string,std::filesystem::file_time_type> FileTracker::generateTimeStampMap(std::ifstream timeStampLogFile)
+std::map<std::string,std::filesystem::file_time_type> FileTracker::generateTimeStampMap(std::string timeStampLogFile)
 {
     std::map<std::string,std::filesystem::file_time_type> timeStampMap;
     return timeStampMap;
@@ -51,7 +66,7 @@ std::map<std::string,std::filesystem::file_time_type> FileTracker::generateTimeS
 
 FileTracker::FileTracker(std::vector<std::filesystem::path> filesList)
 {
-    filesList=filesList;
+    projectFilesList=filesList;
 }
 
 
@@ -59,6 +74,7 @@ std::map<std::string,std::size_t> FileTracker::generateFilesHash(std::vector<std
 {
     std::string fileContent;
     std::map<std::string,std::size_t> FilesHashListCopy;
+    std::cout<<"start generation"<<std::endl;
     for (auto file :filesList)
     {
         auto fileNameString=file.c_str();
@@ -111,7 +127,7 @@ void FileTracker::logTimeStampToTxtFile(std::string FilePath,std::map<std::strin
         for(auto file :FilesTimeStampListCoyp)
         {   
             myfile.width(37);
-            myfile<<file.first<<"\t\t"<<file.second<<"\n";
+            // myfile<<file.first<<"\t\t"<<file.second<<"\n";
         }   
     }
     myfile.close();

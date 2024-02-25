@@ -18,8 +18,8 @@ class FileTracker
         std::string ExtractSoucreeFileContenet(std::string content);
         std::size_t generateHash(const std::string& data);
 
-        std::map<std::string,std::size_t> generateHashMap(std::ifstream hashFileLog);
-        std::map<std::string,std::filesystem::file_time_type> generateTimeStampMap(std::ifstream timeStampLogFile);
+        std::map<std::string,std::size_t> generateHashMap(std::string hashFileLog);
+        std::map<std::string,std::filesystem::file_time_type> generateTimeStampMap(std::string timeStampLogFile);
 
     public:
 

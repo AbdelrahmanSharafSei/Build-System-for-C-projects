@@ -1,11 +1,11 @@
 #include <iostream>
-#include "Build.h"
+#include "BuildSystem.h"
 
 
 int main(int argc,char **argv)
 {
-    int r;
-    BuildSystem x("E:/25_Impl/85_Release");
+
+    BuildSystem x("F:/Embedded");
     std::cout<<"end of executions"<<std::endl;
     return 0;
 }

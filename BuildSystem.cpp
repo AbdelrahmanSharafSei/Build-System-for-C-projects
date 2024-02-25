@@ -84,6 +84,24 @@ BuildSystem::BuildSystem(const std::string projectPath)
 {
     FileList=getProjectFiles(projectPath);
     FileTracker FT(FileList);
+    // for (auto fileName :FileList)
+    // {
+    //     std::cout<<fileName<<std::endl;
+    // }
+    
+    std::ofstream myfile(projectPath+"/cFilesPaths.txt");
+    if (!myfile.is_open())
+    {
+        throw std::runtime_error("Failed to open file: fileList_hashs.txt");
+    }
+    else
+    {
+        for(auto fileName :FileList)
+        {   
+            myfile<<fileName<<"\n";
+        }   
+    }
+    myfile.close();
     
     if(isInitProjectFilesGenerated(projectPath))
     {
