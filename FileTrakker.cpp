@@ -37,7 +37,17 @@ std::size_t FileTracker::generateHash(const std::string& data)
     return hasher(data);
 }
 
+std::map<std::string,std::size_t> FileTracker::generateHashMap(std::ifstream hashLogFile)
+{
+    std::map<std::string,std::size_t> hashMap;
+    return hashMap;
+}
 
+std::map<std::string,std::filesystem::file_time_type> FileTracker::generateTimeStampMap(std::ifstream timeStampLogFile)
+{
+    std::map<std::string,std::filesystem::file_time_type> timeStampMap;
+    return timeStampMap;
+}
 
 FileTracker::FileTracker(std::vector<std::filesystem::path> filesList)
 {
@@ -115,4 +125,11 @@ void FileTracker::printtHashs()
         std::cout.width(37);
         std::cout<<file.first<<"  "<<file.second<<std::endl;
     }
+}
+
+
+std::vector<std::filesystem::path> FileTracker::getUpdatedFilesList()
+{
+    std::vector<std::filesystem::path> fileList;
+    return fileList;
 }

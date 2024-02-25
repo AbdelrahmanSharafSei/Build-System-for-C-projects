@@ -5,11 +5,11 @@
 #include <map>
 #include <vector>
 #include <regex> 
-#include "Build.h"
+#include "BuildSystem.h"
 #include "FileTrakker.h"
 
 
-bool Build::is_cFile(std::filesystem::path f)
+bool BuildSystem::is_cFile(std::filesystem::path f)
 {
     auto fName=f.filename().string();
     std::basic_regex cFileRegex(".*(\\.cpp|\\.c|\\.h)");
@@ -24,7 +24,7 @@ bool Build::is_cFile(std::filesystem::path f)
     }    
 }
 
-bool Build::isInitProjectFilesGenerated(const std::string projectPath)
+bool BuildSystem::isInitProjectFilesGenerated(const std::string projectPath)
 {
     std::string fFileListlog="fileList_hashs.txt";
     std::string fFileListTimeStamp="FileListTimeStamp.txt";
@@ -58,7 +58,7 @@ bool Build::isInitProjectFilesGenerated(const std::string projectPath)
 
 }
 
-std::vector<std::filesystem::path> Build::getProjectFiles (const std::string projectPath)
+std::vector<std::filesystem::path> BuildSystem::getProjectFiles (const std::string projectPath)
 {
     
     std::vector<std::filesystem::path> fileList;
@@ -80,7 +80,7 @@ std::vector<std::filesystem::path> Build::getProjectFiles (const std::string pro
 }
 
 
-Build::Build(const std::string projectPath)
+BuildSystem::BuildSystem(const std::string projectPath)
 {
     FileList=getProjectFiles(projectPath);
     FileTracker FT(FileList);
@@ -100,7 +100,7 @@ Build::Build(const std::string projectPath)
     }
 }
 
-std::vector<std::filesystem::path> Build::getFileList()
+std::vector<std::filesystem::path> BuildSystem::getFileList()
 {
     return FileList;
 }

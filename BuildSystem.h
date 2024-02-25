@@ -6,7 +6,7 @@
 #include <vector>
 #include <filesystem>
 
-class Build
+class BuildSystem
 {
     private:
         std::vector<std::filesystem::path> FileList;
@@ -17,7 +17,7 @@ class Build
         bool isInitProjectFilesGenerated(const std::string projectPath);
         bool Staged;
     public:
-        Build(const std::string projectPath);
+        BuildSystem(const std::string projectPath);
         std::vector<std::filesystem::path> getFileList();
         
 };

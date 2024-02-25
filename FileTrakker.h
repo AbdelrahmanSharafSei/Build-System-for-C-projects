@@ -7,6 +7,8 @@
 #include <functional>
 #include <filesystem>
 
+typedef std::map<std::string,std::size_t> MHasH;
+
 class FileTracker
 {
     private:
@@ -15,6 +17,9 @@ class FileTracker
         std::string readFileContent(std::filesystem::path fpath);
         std::string ExtractSoucreeFileContenet(std::string content);
         std::size_t generateHash(const std::string& data);
+
+        std::map<std::string,std::size_t> generateHashMap(std::ifstream hashFileLog);
+        std::map<std::string,std::filesystem::file_time_type> generateTimeStampMap(std::ifstream timeStampLogFile);
 
     public:
 
@@ -27,6 +32,8 @@ class FileTracker
         std::map<std::string,std::size_t> generateFilesHash(std::vector<std::filesystem::path> filesList);
                 
         void printtHashs();
+
+        std::vector<std::filesystem::path> getUpdatedFilesList();
 };
 
 
