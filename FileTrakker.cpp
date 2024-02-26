@@ -4,7 +4,10 @@
 #include <regex>
 #include <format>
 #include <chrono>
+#include <sstream>
+#include <iomanip>
 #include "FileTrakker.h"
+
 
 using namespace std::chrono_literals;
 
@@ -39,28 +42,141 @@ std::size_t FileTracker::generateHash(const std::string& data)
 
 std::map<std::string,std::size_t> FileTracker::generateHashMap(std::string hashLogFile)
 {
+    std::size_t temp;
     hashLogFile+="/fileList_hashs.txt";
     std::string content,filesName,hashs;
     std::map<std::string,std::size_t> hashMap;
     content=readFileContent(hashLogFile);
-    std::regex fileName("^[A-z].*  ");
-    std::regex Hash("^[0-9][0-9]*");
+    std::regex fileName("[A-z].*\t");
+    std::regex Hash("[0-9][0-9]*");
     std::regex space(" ");
+    std::regex tabs("\t");
+
 
     filesName=std::regex_replace(content,Hash,"");
+    filesName=std::regex_replace(filesName,tabs,"");
     filesName=std::regex_replace(filesName,space,"");
 
     hashs=std::regex_replace(content,fileName,"");
+    hashs=std::regex_replace(hashs,tabs,"");
     hashs=std::regex_replace(hashs,space,"");
+    try
+    {
+        std::fstream myfile("filesName.txt",std::ios::in|std::ios::out|std::ios::app);
+        myfile<<filesName;
 
-    std::cout<<filesName<<std::endl;
-    std::cout<<filesName<<std::endl;
+        std::fstream mfile("hashs.txt",std::ios::in|std::ios::out|std::ios::app);
+        mfile<<hashs;
+        std::string line;
+        std::string hhash;
+        
+        myfile.seekg(0);
+        mfile.seekg(0);
+
+        while (std::getline(myfile,line)&&std::getline(mfile,hhash))
+        {
+            std::stringstream sstream(hhash);
+            sstream >> temp;
+            hashMap.insert({line,temp});
+        }
+        myfile.close();
+        mfile.close();
+        const char * fNamePtr = "filesName.txt";
+        const char * fHashPtr = "hashs.txt";
+        if(remove(fNamePtr) == 0)
+        {
+            std::cout<<fNamePtr<<"was deleted successfuly."<<std::endl;
+        }
+        else
+        {
+            std::cerr<<"Error: failed to remove "<<fNamePtr<<std::endl;
+        }
+
+        if(remove(fHashPtr) == 0)
+        {
+            std::cout<<fHashPtr<<"was deleted successfuly."<<std::endl;
+        }
+        else
+        {
+            std::cerr<<"Error: failed to remove "<<fHashPtr<<std::endl;
+        }
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
     return hashMap;
 }
 
 std::map<std::string,std::filesystem::file_time_type> FileTracker::generateTimeStampMap(std::string timeStampLogFile)
 {
+    std::filesystem::file_time_type temp;
     std::map<std::string,std::filesystem::file_time_type> timeStampMap;
+    timeStampLogFile+="/FileListTimeStamp.txt";
+    std::string content,filesName,hashs;
+    std::map<std::string,std::size_t> hashMap;
+    content=readFileContent(timeStampLogFile);
+    std::regex fileName("[A-z].*\t");
+    std::regex TimeStamp("[0-9]([0-9]|(:)|(-)|(.))*");
+    std::regex space(" ");
+    std::regex tabs("\t");
+
+
+    filesName=std::regex_replace(content,TimeStamp,"");
+    filesName=std::regex_replace(filesName,tabs,"");
+    filesName=std::regex_replace(filesName,space,"");
+
+    hashs=std::regex_replace(content,fileName,"");
+    hashs=std::regex_replace(hashs,tabs,"");
+    hashs=std::regex_replace(hashs,space,"");
+    try
+    {
+        std::fstream myfile("filesName.txt",std::ios::in|std::ios::out|std::ios::app);
+        myfile<<filesName;
+
+        std::fstream mfile("Tstamps.txt",std::ios::in|std::ios::out|std::ios::app);
+        mfile<<hashs;
+        std::string line;
+        std::string hhash;
+        
+        myfile.seekg(0);
+        mfile.seekg(0);
+
+        while (std::getline(myfile,line)&&std::getline(mfile,hhash))
+        {
+            temp=convertStringToFileTimeType(hhash);
+            timeStampMap.insert({line,temp});
+        }
+        myfile.close();
+        mfile.close();
+        const char * fNamePtr = "filesName.txt";
+        const char * fHashPtr = "Tstamps.txt";
+        if(remove(fNamePtr) == 0)
+        {
+            std::cout<<fNamePtr<<"was deleted successfuly."<<std::endl;
+        }
+        else
+        {
+            std::cerr<<"Error: failed to remove "<<fNamePtr<<std::endl;
+        }
+
+        if(remove(fHashPtr) == 0)
+        {
+            std::cout<<fHashPtr<<"was deleted successfuly."<<std::endl;
+        }
+        else
+        {
+            std::cerr<<"Error: failed to remove "<<fHashPtr<<std::endl;
+        }
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    for(auto f : timeStampMap)
+    {
+        std::cout<<f.first<<"  "<<f.second<<std::endl;
+    }
     return timeStampMap;
 }
 
@@ -147,5 +263,23 @@ void FileTracker::printtHashs()
 std::vector<std::filesystem::path> FileTracker::getUpdatedFilesList()
 {
     std::vector<std::filesystem::path> fileList;
+    generateHashMap("E:/25_Impl/85_Release");
+    generateTimeStampMap("E:/25_Impl/85_Release");
     return fileList;
+}
+
+
+std::filesystem::file_time_type FileTracker::convertStringToFileTimeType(const std::string& dateTimeStr) 
+{
+    std::cout<<dateTimeStr<<std::endl;
+    std::tm tm = {};
+    std::istringstream ss(dateTimeStr);
+    ss >> std::get_time(&tm, "%Y-%m-%d %H:%M:%S"); // Use the same format
+    if (ss.fail()) 
+    {
+        throw std::runtime_error("Failed to parse date time string");
+    }
+ 
+    auto tp = std::chrono::system_clock::from_time_t(std::mktime(&tm));
+    return std::filesystem::file_time_type::clock::from_sys(tp);
 }

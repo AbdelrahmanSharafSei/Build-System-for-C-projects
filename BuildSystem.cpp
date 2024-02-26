@@ -106,6 +106,7 @@ BuildSystem::BuildSystem(const std::string projectPath)
     if(isInitProjectFilesGenerated(projectPath))
     {
         std::cout<<"already Init"<<std::endl;
+        FT.getUpdatedFilesList();
         // read the two files
         // compare stamp file with current stamp map, then output list for changed files
         // calculate hash for the list, then compare, then output the changed files
